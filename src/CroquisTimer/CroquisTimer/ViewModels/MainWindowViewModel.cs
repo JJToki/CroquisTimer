@@ -1,19 +1,21 @@
-﻿using Prism.Mvvm;
+﻿using System.Reflection;
+using Prism.Mvvm;
+using Reactive.Bindings;
 
 namespace CroquisTimer.ViewModels
 {
     public class MainWindowViewModel : BindableBase
     {
-        private string _title = "Prism Application";
-        public string Title
-        {
-            get { return _title; }
-            set { SetProperty(ref _title, value); }
-        }
+        #region Property
+        public ReactiveProperty<string> Title { get; }
+        #endregion
 
+        #region Method
         public MainWindowViewModel()
         {
-
+            var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
+            Title = new ReactiveProperty<string>(assemblyName);
         }
+        #endregion
     }
 }
