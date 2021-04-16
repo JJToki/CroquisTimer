@@ -12,7 +12,8 @@
                  d:DataContext="{d:DesignInstance Type=vm:MainWindowViewModel}"
                  prism:ViewModelLocator.AutoWireViewModel="True"
                  mc:Ignorable="d">
-    <Grid>
-        <ContentControl prism:RegionManager.RegionName="ContentRegion" />
-    </Grid>
+    <StackPanel>
+        <Label Content="{Binding TimeRemainingText.Value}" />
+        <Button Command="{Binding StartTimerCommand}" Content="Start" />
+    </StackPanel>
 </mah:MetroWindow>
