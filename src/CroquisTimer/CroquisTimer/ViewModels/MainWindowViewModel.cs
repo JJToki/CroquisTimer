@@ -13,8 +13,8 @@ namespace CroquisTimer.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         #region Field
-        CompositeDisposable _disposables = new CompositeDisposable();
-        CountDownTimer _timer;
+        private CompositeDisposable _disposables = new CompositeDisposable();
+        private CountDownTimer _timer;
         #endregion
 
         #region Property

@@ -14,17 +14,17 @@ namespace CroquisTimer.Models
         /// <summary>
         /// タイマー
         /// </summary>
-         ReactiveTimer _timer;
+        private ReactiveTimer _timer;
 
         /// <summary>
         /// タイマー刻み
         /// </summary>
-         static readonly TimeSpan _interval = TimeSpan.FromSeconds(1);
+        private static readonly TimeSpan _interval = TimeSpan.FromSeconds(1);
 
         /// <summary>
         /// 制限時間
         /// </summary>
-         TimeSpan _timeLimit;
+        private TimeSpan _timeLimit;
         #endregion
 
         #region Property
