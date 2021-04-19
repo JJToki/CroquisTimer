@@ -1,5 +1,8 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Reflection;
+using ControlzEx.Standard;
 using CroquisTimer.Models;
 using Prism.Mvvm;
 using Reactive.Bindings;
@@ -10,13 +13,14 @@ namespace CroquisTimer.ViewModels
     public class MainWindowViewModel : BindableBase
     {
         #region Field
-        CompositeDisposable _disposables;
+        CompositeDisposable _disposables = new CompositeDisposable();
         CountDownTimer _timer;
         #endregion
 
         #region Property
         public ReactiveProperty<string> Title { get; }
-        public ReactiveProperty<string> TimeRemainingText { get; }
+
+        public ReadOnlyReactiveProperty<string> TimeRemainingText { get; }
         #endregion
 
         #region Command
@@ -33,6 +37,8 @@ namespace CroquisTimer.ViewModels
 
             var assemblyName = Assembly.GetExecutingAssembly().GetName().Name;
             Title = new ReactiveProperty<string>(assemblyName).AddTo(_disposables);
+
+            TimeRemainingText = _timer.TimeRemaining.Select(x => x.ToString("mm\\:ss")).ToReadOnlyReactiveProperty().AddTo(_disposables);
 
             StartTimerCommand.Subscribe(() => _timer.Start());
         }

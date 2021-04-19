@@ -4,13 +4,14 @@ using System.Linq;
 using System.Windows.Threading;
 using Prism.Commands;
 using Prism.Mvvm;
+using Reactive.Bindings;
 
 namespace CroquisTimer.Models
 {
     public class CountDownTimer : BindableBase
     {
         #region Field
-        DispatcherTimer _dispatcherTimer;
+        ReactiveTimer _timer;
 
         /// <summary>
         /// 制限時間
@@ -27,12 +28,7 @@ namespace CroquisTimer.Models
         /// <summary>
         /// 残り時間
         /// </summary>
-        private TimeSpan _timeRemaining;
-        public TimeSpan TimeRemaining
-        {
-            get { return _timeRemaining; }
-            set { SetProperty(ref _timeRemaining, value); }
-        }
+        public ReactiveProperty<TimeSpan> TimeRemaining { get; } = new ReactiveProperty<TimeSpan>(default(TimeSpan));
         #endregion
 
         #region Method
@@ -41,15 +37,9 @@ namespace CroquisTimer.Models
         /// </summary>
         public CountDownTimer()
         {
-            _dispatcherTimer = new DispatcherTimer()
-            {
-                Interval = new TimeSpan(0, 0, 1),
-            };
+            _timer = new ReactiveTimer(TimeSpan.FromSeconds(1));
+            _timer.Subscribe(x => TimeRemaining.Value = _timeLimit - (DateTime.Now - _timeStart));
 
-            _dispatcherTimer.Tick += (s, e) =>
-            {
-                TimeRemaining = _timeLimit - (DateTime.Now - _timeStart);
-            };
 
             _timeLimit = new TimeSpan(0, 5, 0);
         }
@@ -60,7 +50,7 @@ namespace CroquisTimer.Models
         public void Start()
         {
             _timeStart = DateTime.Now;
-            _dispatcherTimer.Start();
+            _timer.Start();
         }
 
         /// <summary>
@@ -68,7 +58,7 @@ namespace CroquisTimer.Models
         /// </summary>
         public void Pause()
         {
-            _dispatcherTimer.Stop();
+            _timer.Stop();
         }
         #endregion
     }
