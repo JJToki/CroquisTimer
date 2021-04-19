@@ -5,12 +5,13 @@ using System.Reflection;
 using ControlzEx.Standard;
 using CroquisTimer.Models;
 using Prism.Mvvm;
+using Prism.Navigation;
 using Reactive.Bindings;
 using Reactive.Bindings.Extensions;
 
 namespace CroquisTimer.ViewModels
 {
-    public class MainWindowViewModel : BindableBase
+    public class MainWindowViewModel : BindableBase, IDestructible
     {
         #region Field
         private CompositeDisposable _disposables = new CompositeDisposable();
@@ -42,6 +43,8 @@ namespace CroquisTimer.ViewModels
 
             StartTimerCommand.Subscribe(() => _timer.Start());
         }
+
+        public void Destroy() => _disposables.Dispose();
         #endregion
     }
 }
