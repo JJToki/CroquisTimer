@@ -25,7 +25,7 @@ namespace CroquisTimer.ViewModels
         #endregion
 
         #region Command
-        public ReactiveCommand StartTimerCommand { get; } = new ReactiveCommand();
+        public ReactiveCommand<bool> StartPauseTimerCommand { get; } = new ReactiveCommand<bool>();
         #endregion
 
         #region Method
@@ -41,7 +41,7 @@ namespace CroquisTimer.ViewModels
 
             TimeRemainingText = _timer.TimeRemaining.Select(x => x.ToString("mm\\:ss")).ToReadOnlyReactiveProperty().AddTo(_disposables);
 
-            StartTimerCommand.Subscribe(() => _timer.Start());
+            StartPauseTimerCommand.Subscribe(isChecked => { if (isChecked) _timer.Start(); else _timer.Pause(); });
         }
 
         public void Destroy() => _disposables.Dispose();

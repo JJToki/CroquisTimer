@@ -20,7 +20,8 @@
                FontSize="50" />
         <ToggleButton Width="50"
                       Height="50"
-                      Command="{Binding StartTimerCommand}">
+                      Command="{Binding StartPauseTimerCommand}"
+                      CommandParameter="{Binding IsChecked, RelativeSource={RelativeSource Self}}">
             <ToggleButton.Style>
                 <Style BasedOn="{StaticResource MahApps.Styles.ToggleButton.Circle}" TargetType="{x:Type ToggleButton}">
                     <Setter Property="Content" Value="{iconPacks:BoxIcons Kind=RegularPause}" />
