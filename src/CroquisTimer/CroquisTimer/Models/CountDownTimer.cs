@@ -11,24 +11,27 @@ namespace CroquisTimer.Models
     public class CountDownTimer : BindableBase
     {
         #region Field
-        ReactiveTimer _timer;
+        /// <summary>
+        /// タイマー
+        /// </summary>
+         ReactiveTimer _timer;
+
+        /// <summary>
+        /// タイマー刻み
+        /// </summary>
+         static readonly TimeSpan _interval = TimeSpan.FromSeconds(1);
 
         /// <summary>
         /// 制限時間
         /// </summary>
-        TimeSpan _timeLimit;
-
-        /// <summary>
-        /// 開始時刻
-        /// </summary>
-        DateTime _timeStart;
+         TimeSpan _timeLimit;
         #endregion
 
         #region Property
         /// <summary>
         /// 残り時間
         /// </summary>
-        public ReactiveProperty<TimeSpan> TimeRemaining { get; } = new ReactiveProperty<TimeSpan>(default(TimeSpan));
+        public ReactiveProperty<TimeSpan> TimeRemaining { get; }
         #endregion
 
         #region Method
@@ -37,11 +40,12 @@ namespace CroquisTimer.Models
         /// </summary>
         public CountDownTimer()
         {
-            _timer = new ReactiveTimer(TimeSpan.FromSeconds(1));
-            _timer.Subscribe(x => TimeRemaining.Value = _timeLimit - (DateTime.Now - _timeStart));
-
+            _timer = new ReactiveTimer(_interval);
+            _timer.Subscribe(_ => TimeRemaining.Value -= _interval);
 
             _timeLimit = new TimeSpan(0, 5, 0);
+
+            TimeRemaining = new ReactiveProperty<TimeSpan>(_timeLimit);
         }
 
         /// <summary>
@@ -49,7 +53,6 @@ namespace CroquisTimer.Models
         /// </summary>
         public void Start()
         {
-            _timeStart = DateTime.Now;
             _timer.Start();
         }
 
